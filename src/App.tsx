@@ -1,12 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Checkbox } from '@/components/ui/checkbox'
 import { ClipboardList, ChevronLeft, ChevronRight, GripVertical, Sparkles, FileText, ExternalLink, ChevronUp, ChevronDown, X } from 'lucide-react'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 function App() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -124,7 +118,7 @@ function App() {
   ]
 
   const [selectedOptions, setSelectedOptions] = useState([1])
-  const [recommendedOption, setRecommendedOption] = useState(1)
+  const [recommendedOption, setRecommendedOption] = useState<number | null>(1)
 
   const [draftSections] = useState({
     executiveSummary: {
@@ -487,10 +481,9 @@ Phase 2 (2027-2030): Introduction of adjusted indexation formulas and gradual re
                 </div>
                 <button 
                   className="underline text-sm mt-1"
-                  style={{ color: '#008030' }}
+                  style={{ color: '#008030', cursor: 'pointer' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#006020'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#008030'}
-                  style={{ cursor: 'pointer' }}
                 >
                   + Add Section
                 </button>
