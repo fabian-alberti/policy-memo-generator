@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy Memo Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 2V8H20" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 13H8" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M16 17H8" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M10 9H8" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="app-title">Policy Memo Generator</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Steps -->
+    <nav class="steps-nav">
+        <div class="step" data-step="1" id="step-1">
+            <span>Enter Details</span>
+        </div>
+        <div class="step" data-step="2" id="step-2">
+            <span>Select Options</span>
+        </div>
+        <div class="step" data-step="3" id="step-3">
+            <span>Edit Draft</span>
+        </div>
+        <div class="step" data-step="4" id="step-4">
+            <span>Finalize</span>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Step 1: Enter Details -->
+        <div class="step-content" id="step-content-1">
+            <form id="details-form">
+                <!-- Memo Title -->
+                <div class="form-group">
+                    <label for="memo-title">Memo Title*</label>
+                    <input type="text" id="memo-title" name="memo-title" required 
+                           value="Rising Costs of the German Social Welfare System: Challenges and Strategic Ref">
+                </div>
+
+                <!-- Topic Details -->
+                <div class="form-group">
+                    <label for="topic-details">Topic Details</label>
+                    <textarea id="topic-details" name="topic-details" rows="4">The Minister has requested this memo in preparation for the upcoming Budget Committee hearing on November 15th, where she will present the Ministry's position on social spending reforms. The memo should provide a balanced analysis that can inform both internal ministry discussions and potential talking points for parliamentary debates. Focus on evidence-based options that are politically feasible and economically sound.</textarea>
+                </div>
+
+                <!-- Addressee -->
+                <div class="form-group">
+                    <label for="addressee">Addressee*</label>
+                    <div class="input-with-actions">
+                        <input type="text" id="addressee" name="addressee" required 
+                               value="Fed. Ministry of Labour and Social Affairs - Bärbel Bas">
+                        <a href="#" class="add-link" id="add-addressee">+ Add Addressee</a>
+                        <select class="dropdown-select">
+                            <option>Select...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Length Requirement -->
+                <div class="form-group">
+                    <label for="length-requirement">Length Requirement*</label>
+                    <div class="input-with-dropdown">
+                        <input type="number" id="length-requirement" name="length-requirement" required value="2" min="1">
+                        <select class="length-unit">
+                            <option selected>Pages</option>
+                            <option>Words</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- References -->
+                <div class="form-group">
+                    <label for="references">References*</label>
+                    <div class="references-header">
+                        <a href="#" class="add-link" id="add-reference">+ Add Reference</a>
+                    </div>
+                    <div id="references-list">
+                        <input type="text" class="reference-input" 
+                               value="Federal Statistical Office (Destatis) - Social Budget 2024 Report">
+                        <input type="text" class="reference-input" 
+                               value="OECD Economic Survey Germany 2024 - Social Spending Analysis">
+                        <input type="text" class="reference-input" 
+                               value="Bundesministerium für Arbeit und Soziales - Sozialbericht 2024">
+                    </div>
+                </div>
+
+                <!-- Memo Structure -->
+                <div class="form-group">
+                    <label>Memo Structure</label>
+                    <div class="structure-header">
+                        <a href="#" class="add-link" id="add-section">+ Add Section</a>
+                    </div>
+                    <div id="structure-list" class="structure-list">
+                        <div class="structure-item" draggable="true">
+                            <span class="drag-handle">☰</span>
+                            <div class="structure-content">
+                                <strong>Executive Summary</strong>
+                                <p>Overview of social welfare cost drivers and urgency for reform initiatives</p>
+                            </div>
+                            <span class="ellipsis-menu">⋯</span>
+                        </div>
+                        <div class="structure-item" draggable="true">
+                            <span class="drag-handle">☰</span>
+                            <div class="structure-content">
+                                <strong>Background</strong>
+                                <p>Analysis of budget trends, demographic shifts, and expenditure patterns</p>
+                            </div>
+                            <span class="ellipsis-menu">⋯</span>
+                        </div>
+                        <div class="structure-item" draggable="true">
+                            <span class="drag-handle">☰</span>
+                            <div class="structure-content">
+                                <strong>Policy Options</strong>
+                                <p>Aging population, healthcare inflation, pension obligations, and social assistance costs</p>
+                            </div>
+                            <span class="ellipsis-menu">⋯</span>
+                        </div>
+                        <div class="structure-item" draggable="true">
+                            <span class="drag-handle">☰</span>
+                            <div class="structure-content">
+                                <strong>Recommendation</strong>
+                                <p>Prioritized action plan with timeline and expected fiscal impact</p>
+                            </div>
+                            <span class="ellipsis-menu">⋯</span>
+                        </div>
+                        <div class="structure-item" draggable="true">
+                            <span class="drag-handle">☰</span>
+                            <div class="structure-content">
+                                <strong>Implementation Strategy</strong>
+                                <p>Stakeholder engagement, legislative steps, and communication framework</p>
+                            </div>
+                            <span class="ellipsis-menu">⋯</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-primary" id="generate-btn-step1">Generate</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Step 2: Select Options -->
+        <div class="step-content hidden" id="step-content-2">
+            <div class="options-selector">
+                <div class="options-scroller">
+                    <button class="scroll-btn scroll-left" id="scroll-left">‹</button>
+                    <div class="options-list" id="options-list">
+                        <a href="#" class="option-tab active" data-option="1">1) Policy Option</a>
+                        <a href="#" class="option-tab" data-option="2">2) Policy Option</a>
+                        <a href="#" class="option-tab" data-option="3">3) Policy Option</a>
+                        <a href="#" class="option-tab" data-option="4">4) Policy Option</a>
+                        <a href="#" class="option-tab" data-option="5">5) Policy Option</a>
+                    </div>
+                    <button class="scroll-btn scroll-right" id="scroll-right">›</button>
+                </div>
+            </div>
+
+            <div class="option-details" id="option-details">
+                <h2>1) Policy Option</h2>
+                <p class="option-description">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+                <div class="references-section">
+                    <strong>References:</strong>
+                    <div class="reference-links">
+                        <a href="#" class="reference-link">Report_1.de</a>
+                        <a href="#" class="reference-link">Report_2.pdf</a>
+                    </div>
+                </div>
+                <div class="option-checkboxes">
+                    <label class="checkbox-label">
+                        <input type="checkbox" class="option-checkbox" checked>
+                        <span>Select as Policy Option</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" class="option-checkbox recommended-checkbox" checked>
+                        <span>Select as Recommended Option</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-primary" id="generate-draft-btn">Generate Draft</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Edit Draft -->
+        <div class="step-content hidden" id="step-content-3">
+            <div class="draft-sections">
+                <!-- Executive Summary -->
+                <div class="draft-section expanded">
+                    <div class="section-header">
+                        <svg class="section-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <rect x="3" y="3" width="14" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M3 7H17M7 3V17" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <h3>Executive Summary</h3>
+                        <div class="section-actions">
+                            <button class="btn-refine">AI Refine <span class="icon-plus">++</span></button>
+                            <button class="btn-collapse">▲</button>
+                        </div>
+                    </div>
+                    <div class="section-content">
+                        <div class="feedback-field">
+                            <label>Feedback for AI Adjustments</label>
+                            <input type="text" placeholder="e.g. make it more concise,...">
+                        </div>
+                        <textarea class="section-textarea" rows="6">Germany's social welfare system faces unprecedented fiscal pressures, with annual expenditures reaching €1.19 trillion in 2023. This memo analyzes the primary cost drivers and presents three strategic reform pathways. Key findings indicate that without intervention, contribution rates will increase by 2.1 percentage points by 2035, threatening economic competitiveness. The recommended approach combines efficiency improvements, targeted means-testing, and gradual parametric adjustments to ensure long-term sustainability while preserving core social protections.</textarea>
+                    </div>
+                </div>
+
+                <!-- Background -->
+                <div class="draft-section">
+                    <div class="section-header">
+                        <svg class="section-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <rect x="3" y="3" width="14" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M3 7H17M7 3V17" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <h3>Background</h3>
+                        <div class="section-actions">
+                            <button class="btn-refine">AI Refine <span class="icon-plus">++</span></button>
+                            <button class="btn-collapse">▼</button>
+                        </div>
+                    </div>
+                    <div class="section-content hidden">
+                        <textarea class="section-textarea" rows="6">Social expenditure has grown from 29.1% of GDP in 2015 to 31.6% in 2023, significantly outpacing economic growth. The pension insurance system currently serves 21 million beneficiaries, with projections showing this number increasing to 23.5 million by 2035 as baby boomers retire. Statutory health insurance costs have risen at an average annual rate of 4.2%, driven by medical innovation, demographic aging, and increased utilization. Long-term care insurance expenditure reached €53 billion in 2023, with the number of care recipients growing from 3.4 million to a projected 5.2 million by 2040. The Bürgergeld system supports 5.5 million recipients at an annual cost of €42 billion.</textarea>
+                    </div>
+                </div>
+
+                <!-- Policy Options -->
+                <div class="draft-section">
+                    <div class="section-header">
+                        <svg class="section-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <rect x="3" y="3" width="14" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M3 7H17M7 3V17" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <h3>Policy Options</h3>
+                        <div class="section-actions">
+                            <button class="btn-refine">AI Refine <span class="icon-plus">++</span></button>
+                            <button class="btn-collapse">▼</button>
+                        </div>
+                    </div>
+                    <div class="section-content hidden">
+                        <textarea class="section-textarea" rows="6">Three reform pathways emerge from international benchmarking and domestic feasibility analysis: Option A - Efficiency-focused: Digitalization of administrative processes (projected savings: €3-5bn), enhanced fraud prevention, and cross-system data integration. This approach minimizes political resistance but delivers limited fiscal impact. Option B - Parametric adjustment: Gradual increase in retirement age aligned with life expectancy (0.5 months per year), adjusted indexation formulas for benefits, and introduction of means-testing for higher-income pensioners. Expected fiscal relief: €15-20bn annually by 2035. Option C - Structural reform: Transition toward partial capital funding for pensions, consolidated health and care insurance, and activity-based social assistance. Highest fiscal impact (€25-30bn) but requires legislative supermajority and extended implementation timeline.</textarea>
+                    </div>
+                </div>
+
+                <!-- Recommendation -->
+                <div class="draft-section">
+                    <div class="section-header">
+                        <svg class="section-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <rect x="3" y="3" width="14" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M3 7H17M7 3V17" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <h3>Recommendation</h3>
+                        <div class="section-actions">
+                            <button class="btn-refine">AI Refine <span class="icon-plus">++</span></button>
+                            <button class="btn-collapse">▼</button>
+                        </div>
+                    </div>
+                    <div class="section-content hidden">
+                        <textarea class="section-textarea" rows="6">The Ministry recommends a phased hybrid approach combining elements of Options A and B: Phase 1 (2024-2026): Immediate implementation of efficiency measures and administrative digitalization. Establish expert commission for parametric reform design. Expected savings: €4bn annually. Phase 2 (2027-2030): Introduction of adjusted indexation formulas and gradual retirement age alignment. Launch pilot programs for targeted means-testing. Expected savings: €12bn annually by 2030. Phase 3 (2031-2035): Full implementation of parametric adjustments, expansion of means-testing, and evaluation of structural reform feasibility. Expected cumulative savings: €45bn by 2035.</textarea>
+                    </div>
+                </div>
+
+                <!-- Implementation Strategy -->
+                <div class="draft-section">
+                    <div class="section-header">
+                        <svg class="section-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <rect x="3" y="3" width="14" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M3 7H17M7 3V17" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <h3>Implementation Strategy</h3>
+                        <div class="section-actions">
+                            <button class="btn-refine">AI Refine <span class="icon-plus">++</span></button>
+                            <button class="btn-collapse">▼</button>
+                        </div>
+                    </div>
+                    <div class="section-content hidden">
+                        <textarea class="section-textarea" rows="6">Success requires coordinated action across multiple dimensions: Stakeholder engagement: Consultation rounds with social partners, länder governments, and affected organizations (Timeline: Q4 2024 - Q1 2025). Public communication campaign emphasizing sustainability and social protection. Legislative pathway: Introduction of efficiency bill in Q2 2025, parametric reform bill in Q3 2026. Budget allocation: €200 million for digitalization infrastructure, €50 million for expert commissions. Monitoring framework: Quarterly progress reviews, annual impact assessments, mid-term evaluation in 2029.</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-primary" id="finalize-btn-step3">Finalize</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Finalize -->
+        <div class="step-content hidden" id="step-content-4">
+            <div class="final-version-container">
+                <h2 class="final-version-title">Final Version</h2>
+                <div class="final-version-content" id="final-version-content">
+                    <h3>Executive Summary</h3>
+                    <p>Germany's social welfare system faces unprecedented fiscal pressures, with annual expenditures reaching €1.19 trillion in 2023. This memo analyzes the primary cost drivers and presents three strategic reform pathways. Key findings indicate that without intervention, contribution rates will increase by 2.1 percentage points by 2035, threatening economic competitiveness. The recommended approach combines efficiency improvements, targeted means-testing, and gradual parametric adjustments to ensure long-term sustainability while preserving core social protections.</p>
+
+                    <h3>Background</h3>
+                    <p>Social expenditure has grown from 29.1% of GDP in 2015 to 31.6% in 2023, significantly outpacing economic growth. The pension insurance system currently serves 21 million beneficiaries, with projections showing this number increasing to 23.5 million by 2035 as baby boomers retire. Statutory health insurance costs have risen at an average annual rate of 4.2%, driven by medical innovation, demographic aging, and increased utilization. Long-term care insurance expenditure reached €53 billion in 2023, with the number of care recipients growing from 3.4 million to a projected 5.2 million by 2040. The Bürgergeld system supports 5.5 million recipients at an annual cost of €42 billion.</p>
+
+                    <h3>Policy Options</h3>
+                    <p>Three reform pathways emerge from international benchmarking and domestic feasibility analysis:</p>
+                    <p><strong>Option A - Efficiency-focused:</strong> Digitalization of administrative processes (projected savings: €3-5bn), enhanced fraud prevention, and cross-system data integration. This approach minimizes political resistance but delivers limited fiscal impact.</p>
+                    <p><strong>Option B - Parametric adjustment:</strong> Gradual increase in retirement age aligned with life expectancy (0.5 months per year), adjusted indexation formulas for benefits, and introduction of means-testing for higher-income pensioners. Expected fiscal relief: €15-20bn annually by 2035.</p>
+                    <p><strong>Option C - Structural reform:</strong> Transition toward partial capital funding for pensions, consolidated health and care insurance, and activity-based social assistance. Highest fiscal impact (€25-30bn) but requires legislative supermajority and extended implementation timeline.</p>
+
+                    <h3>Recommendation</h3>
+                    <p>The Ministry recommends a phased hybrid approach combining elements of Options A and B:</p>
+                    <p><strong>Phase 1 (2024-2026):</strong> Immediate implementation of efficiency measures and administrative digitalization. Establish expert commission for parametric reform design. Expected savings: €4bn annually.</p>
+                    <p><strong>Phase 2 (2027-2030):</strong> Introduction of adjusted indexation formulas and gradual retirement age alignment. Launch pilot programs for targeted means-testing. Expected savings: €12bn annually by 2030.</p>
+                    <p><strong>Phase 3 (2031-2035):</strong> Full implementation of parametric adjustments, expansion of means-testing, and evaluation of structural reform feasibility. Expected cumulative savings: €45bn by 2035.</p>
+
+                    <h3>Implementation Strategy</h3>
+                    <p>Success requires coordinated action across multiple dimensions:</p>
+                    <p><strong>Stakeholder engagement:</strong> Consultation rounds with social partners, länder governments, and affected organizations (Timeline: Q4 2024 - Q1 2025). Public communication campaign emphasizing sustainability and social protection.</p>
+                    <p><strong>Legislative pathway:</strong> Introduction of efficiency bill in Q2 2025, parametric reform bill in Q3 2026.</p>
+                    <p><strong>Budget allocation:</strong> €200 million for digitalization infrastructure, €50 million for expert commissions.</p>
+                    <p><strong>Monitoring framework:</strong> Quarterly progress reviews, annual impact assessments, mid-term evaluation in 2029.</p>
+                </div>
+            </div>
+
+            <div class="form-actions finalize-actions">
+                <button type="button" class="btn-secondary" id="save-btn">Save</button>
+                <button type="button" class="btn-primary" id="export-btn">Export</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
