@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
-import { ClipboardList, ChevronLeft, ChevronRight, GripVertical, Sparkles } from 'lucide-react'
+import { ClipboardList, ChevronLeft, ChevronRight, GripVertical, Sparkles, FileText, ExternalLink, ChevronUp, ChevronDown, X } from 'lucide-react'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 function App() {
@@ -21,52 +21,105 @@ function App() {
 
   const [memoTitle] = useState("Rising Costs of the German Social Welfare System: Challenges and Strategic Reforms")
   const [topicDetails] = useState("The Minister has requested this memo in preparation for the upcoming Budget Committee hearing on November 15th, where she will present the Ministry's position on social spending reforms. The memo should provide a balanced analysis that can inform both internal ministry discussions and potential talking points for parliamentary debates. Focus on evidence-based options that are")
-  const [addressee] = useState("Fed. Ministry of Labour and Social Affairs - Bärbel Bas")
+  const [addressee, setAddressee] = useState("Fed. Ministry of Labour and Social Affairs - Bärbel Bas")
+  
+  const addresseeOptions = [
+    "Fed. Ministry of Labour and Social Affairs - Bärbel Bas",
+    "Fed. Ministry of Finance - Lars Klingbeil",
+    "Fed. Ministry of Health - Nina Warken",
+    "Fed. Ministry of the Interior - Alexander Dobrindt",
+    "Fed. Ministry of Economic Affairs and Energy - Katherina Reiche"
+  ]
   const [lengthValue] = useState("2")
   const [lengthUnit] = useState("Pages")
   const [references] = useState([
-    "Federal Statistical Office (Destatis) - Social Budget 2024 Report",
-    "OECD Economic Survey Germany 2024 - Social Spending Analysis",
-    "Bundesministerium für Arbeit und Soziales - Sozialbericht 2024"
+    { type: 'pdf', name: 'OECD - Pension System Reform Models in European Countries (2024).pdf' },
+    { type: 'pdf', name: 'Bundesministerium - Consolidation Framework for Social Insurance Systems.pdf' },
+    { type: 'link', name: 'https://www.bmas.de/sozialversicherung-strukturreform' },
+    { type: 'pdf', name: 'Destatis - Life Expectancy and Retirement Age Analysis 2024.pdf' },
+    { type: 'pdf', name: 'IW Köln - Means-Testing Models for Pension Systems.pdf' },
+    { type: 'link', name: 'https://www.destatis.de/rente-altersgrenze' },
+    { type: 'pdf', name: 'Digitalisierung im Sozialwesen - Effizienzsteigerung durch IT.pdf' },
+    { type: 'link', name: 'https://www.digitalisierung-bmas.de/verwaltungsoptimierung' },
+    { type: 'pdf', name: 'BMF - Solidarity Levy Framework and Revenue Projections.pdf' },
+    { type: 'pdf', name: 'Ifo Institut - Impact Analysis of Contribution Rate Increases.pdf' },
+    { type: 'link', name: 'https://www.bundesfinanzministerium.de/beitragssaetze' },
+    { type: 'pdf', name: 'Paritätischer Wohlfahrtsverband - Impact Assessment of Benefit Freezes.pdf' },
+    { type: 'link', name: 'https://www.sozialverband.de/leistungsstopp-analysen' }
   ])
-  const [memoStructure] = useState([
-    { title: "Executive Summary", description: "Overview of social welfare cost drivers and urgency for refor..." },
-    { title: "Background", description: "Analysis of budget trends, demographic shifts, and expendi..." },
-    { title: "Policy Options", description: "Aging population, healthcare inflation, pension obligations..." },
-    { title: "Recommendation", description: "Prioritized action plan with timeline and expected fiscal impa..." },
-    { title: "Implementation Strategy", description: "Stakeholder engagement, legislative steps, and communicat..." }
+  const [memoStructure, setMemoStructure] = useState([
+    { id: 1, title: "Executive Summary", description: "Overview of social welfare cost drivers and urgency for refor...", selected: true },
+    { id: 2, title: "Background", description: "Analysis of budget trends, demographic shifts, and expendi...", selected: true },
+    { id: 3, title: "Policy Options", description: "Aging population, healthcare inflation, pension obligations...", selected: true },
+    { id: 4, title: "Recommendation", description: "Prioritized action plan with timeline and expected fiscal impa...", selected: true },
+    { id: 5, title: "Implementation Strategy", description: "Stakeholder engagement, legislative steps, and communicat...", selected: true }
   ])
+  const moveSectionUp = (index: number) => {
+    if (index === 0) return
+    const newStructure = [...memoStructure]
+    const temp = newStructure[index]
+    newStructure[index] = newStructure[index - 1]
+    newStructure[index - 1] = temp
+    setMemoStructure(newStructure)
+  }
+
+  const moveSectionDown = (index: number) => {
+    if (index === memoStructure.length - 1) return
+    const newStructure = [...memoStructure]
+    const temp = newStructure[index]
+    newStructure[index] = newStructure[index + 1]
+    newStructure[index + 1] = temp
+    setMemoStructure(newStructure)
+  }
 
   const policyOptions = [
     {
       id: 1,
-      title: "Policy Option",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque. Duis vulputate commodo lectus, ac blandit elit tincidunt id. Sed rhoncus, tortor sed eleifend tristique, tortor mauris molestie elit, et lacinia ipsum quam nec dui. Quisque nec mauris sit amet elit iaculis pretium sit amet quis magna. Aenean velit odio, elementum in tempus ut, vehicula eu diam. Pellentesque rhoncus aliquam mattis. Ut vulputate eros sed felis sodales nec vulputate justo hendrerit. Vivamus varius pretium ligula, a aliquam odio euismod sit amet. Quisque laoreet sem sit amet orci ullamcorper at ultricies metus viverra. Pellentesque arcu mauris, malesuada quis ornare accumsan, blandit sed diam.",
-      references: ["Report_1.de", "Report_2.pdf"]
+      title: "Structural Reform",
+      content: "Shift toward partially funded pensions, consolidated health and care insurance, and activity-based social assistance.\n\n→ Highest fiscal relief (€25–30bn annually), but requires legislative supermajority and extended implementation timeline.",
+      references: [
+        { type: 'pdf', name: 'OECD - Pension System Reform Models in European Countries (2024).pdf' },
+        { type: 'pdf', name: 'Bundesministerium - Consolidation Framework for Social Insurance Systems.pdf' },
+        { type: 'link', name: 'https://www.bmas.de/sozialversicherung-strukturreform' }
+      ]
     },
     {
       id: 2,
-      title: "Policy Option",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque. Duis vulputate commodo lectus, ac blandit elit tincidunt id. Sed rhoncus, tortor sed eleifend tristique, tortor mauris molestie elit, et lacinia ipsum quam nec dui.",
-      references: ["Report_3.de", "Report_4.pdf"]
+      title: "Parametric Adjustment",
+      content: "Gradual increase in retirement age aligned with life expectancy, adjusted indexation formulas for benefits, and means-testing for higher-income pensioners.\n\n→ Strong fiscal impact (€15–20bn annually by 2030) while maintaining social fairness and long-term sustainability.",
+      references: [
+        { type: 'pdf', name: 'Destatis - Life Expectancy and Retirement Age Analysis 2024.pdf' },
+        { type: 'pdf', name: 'IW Köln - Means-Testing Models for Pension Systems.pdf' },
+        { type: 'link', name: 'https://www.destatis.de/rente-altersgrenze' }
+      ]
     },
     {
       id: 3,
-      title: "Policy Option",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque. Duis vulputate commodo lectus, ac blandit elit tincidunt id.",
-      references: ["Report_5.de"]
+      title: "Efficiency-focused",
+      content: "Digitalization of administrative processes, enhanced fraud prevention, and cross-system data integration.\n\n→ Minimizes political resistance and yields moderate savings (€3–5bn annually), though limited in structural effect.",
+      references: [
+        { type: 'pdf', name: 'Digitalisierung im Sozialwesen - Effizienzsteigerung durch IT.pdf' },
+        { type: 'link', name: 'https://www.digitalisierung-bmas.de/verwaltungsoptimierung' }
+      ]
     },
     {
       id: 4,
-      title: "Policy Option",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.",
-      references: ["Report_6.de", "Report_7.pdf"]
+      title: "Revenue Expansion",
+      content: "Increase social contribution rates by 0.5 percentage points and introduce a \"solidarity levy\" on capital income.\n\n→ Provides immediate fiscal relief but risks dampening growth and increasing the burden on younger generations.",
+      references: [
+        { type: 'pdf', name: 'BMF - Solidarity Levy Framework and Revenue Projections.pdf' },
+        { type: 'pdf', name: 'Ifo Institut - Impact Analysis of Contribution Rate Increases.pdf' },
+        { type: 'link', name: 'https://www.bundesfinanzministerium.de/beitragssaetze' }
+      ]
     },
     {
       id: 5,
-      title: "Policy Option",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec.",
-      references: ["Report_8.de"]
+      title: "Benefit Moratorium",
+      content: "Freeze pension and welfare benefit growth for two years while inflation compensation is reviewed.\n\n→ Achieves short-term savings but undermines trust and may heighten poverty among vulnerable groups.",
+      references: [
+        { type: 'pdf', name: 'Paritätischer Wohlfahrtsverband - Impact Assessment of Benefit Freezes.pdf' },
+        { type: 'link', name: 'https://www.sozialverband.de/leistungsstopp-analysen' }
+      ]
     }
   ]
 
@@ -141,340 +194,565 @@ Phase 2 (2027-2030): Introduction of adjusted indexation formulas and gradual re
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-100" style={{ fontFamily: 'Arial, Helvetica, sans-serif' }}>
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 py-6">
-        <div className="max-w-5xl mx-auto px-8">
+      <div className="bg-green-600 border-b-4 border-green-800 py-3">
+        <div className="max-w-5xl mx-auto px-4">
           <div className="flex items-center gap-3">
-            <ClipboardList className="w-10 h-10 text-green-700" />
-            <h1 className="text-4xl font-bold">Policy Memo Generator</h1>
+            <ClipboardList className="w-8 h-8 text-white" />
+            <h1 className="text-3xl font-bold text-white" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}>Policy Memo Generator</h1>
           </div>
         </div>
       </div>
 
       {/* Progress Steps */}
-      <div className="max-w-5xl mx-auto px-8 py-8">
-        <div className="flex items-center gap-0 mb-8">
+      <div className="max-w-5xl mx-auto px-4 py-6">
+        <table className="w-full mb-6 border-collapse" cellPadding="0" cellSpacing="0">
+          <tbody>
+            <tr>
+              <td className="w-1/4">
           <button
             onClick={() => goToStep(1)}
-            className={`flex-1 py-3 px-6 font-semibold transition-colors ${
+                  className={`w-full py-2 px-3 font-bold text-sm border-2 ${
               currentStep === 1
-                ? 'bg-green-700 text-white rounded-l-full'
-                : 'bg-gray-300 text-gray-700 rounded-l-full hover:bg-gray-400'
-            }`}
+                      ? 'text-white'
+                      : 'bg-gray-300 text-black border-gray-500 border-t-gray-400 border-l-gray-400 hover:bg-gray-400'
+                  }`}
+                  style={{ 
+                    ...(currentStep === 1 && {
+                      backgroundColor: '#008030',
+                      border: '2px solid #006020',
+                      borderTop: '2px solid #00a040',
+                      borderLeft: '2px solid #00a040'
+                    }),
+                    boxShadow: currentStep === 1 ? 'inset 1px 1px 2px rgba(0,0,0,0.3)' : '2px 2px 4px rgba(0,0,0,0.2)',
+                    cursor: 'pointer'
+                  }}
           >
             Enter Details
           </button>
+              </td>
+              <td className="w-1/4">
           <button
             onClick={() => goToStep(2)}
-            className={`flex-1 py-3 px-6 font-semibold transition-colors ${
+                  className={`w-full py-2 px-3 font-bold text-sm border-2 ${
               currentStep === 2
-                ? 'bg-green-700 text-white'
-                : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
-            }`}
+                      ? 'text-white'
+                      : 'bg-gray-300 text-black border-gray-500 border-t-gray-400 border-l-gray-400 hover:bg-gray-400'
+                  }`}
+                  style={{ 
+                    ...(currentStep === 2 && {
+                      backgroundColor: '#008030',
+                      border: '2px solid #006020',
+                      borderTop: '2px solid #00a040',
+                      borderLeft: '2px solid #00a040'
+                    }),
+                    boxShadow: currentStep === 2 ? 'inset 1px 1px 2px rgba(0,0,0,0.3)' : '2px 2px 4px rgba(0,0,0,0.2)',
+                    cursor: 'pointer'
+                  }}
           >
             Select Options
           </button>
+              </td>
+              <td className="w-1/4">
           <button
             onClick={() => goToStep(3)}
-            className={`flex-1 py-3 px-6 font-semibold transition-colors ${
+                  className={`w-full py-2 px-3 font-bold text-sm border-2 ${
               currentStep === 3
-                ? 'bg-green-700 text-white'
-                : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
-            }`}
+                      ? 'text-white'
+                      : 'bg-gray-300 text-black border-gray-500 border-t-gray-400 border-l-gray-400 hover:bg-gray-400'
+                  }`}
+                  style={{ 
+                    ...(currentStep === 3 && {
+                      backgroundColor: '#008030',
+                      border: '2px solid #006020',
+                      borderTop: '2px solid #00a040',
+                      borderLeft: '2px solid #00a040'
+                    }),
+                    boxShadow: currentStep === 3 ? 'inset 1px 1px 2px rgba(0,0,0,0.3)' : '2px 2px 4px rgba(0,0,0,0.2)',
+                    cursor: 'pointer'
+                  }}
           >
             Edit Draft
           </button>
+              </td>
+              <td className="w-1/4">
           <button
             onClick={() => goToStep(4)}
-            className={`flex-1 py-3 px-6 font-semibold transition-colors ${
+                  className={`w-full py-2 px-3 font-bold text-sm border-2 ${
               currentStep === 4
-                ? 'bg-green-700 text-white rounded-r-full'
-                : 'bg-gray-300 text-gray-700 rounded-r-full hover:bg-gray-400'
-            }`}
+                      ? 'text-white'
+                      : 'bg-gray-300 text-black border-gray-500 border-t-gray-400 border-l-gray-400 hover:bg-gray-400'
+                  }`}
+                  style={{ 
+                    ...(currentStep === 4 && {
+                      backgroundColor: '#008030',
+                      border: '2px solid #006020',
+                      borderTop: '2px solid #00a040',
+                      borderLeft: '2px solid #00a040'
+                    }),
+                    boxShadow: currentStep === 4 ? 'inset 1px 1px 2px rgba(0,0,0,0.3)' : '2px 2px 4px rgba(0,0,0,0.2)',
+                    cursor: 'pointer'
+                  }}
           >
             Finalize
           </button>
-        </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
         {/* Step 1: Enter Details */}
         {currentStep === 1 && (
-          <div className="space-y-6">
+          <div className="bg-white border-2 border-gray-400 p-4" style={{ boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.1)' }}>
+            <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Memo Title<span className="text-red-500">*</span>
+                <label className="block text-sm font-bold mb-1 text-black">
+                  Memo Title<span className="text-red-600 ml-1">*</span>
               </label>
-              <Input
+                <input
+                  type="text"
                 value={memoTitle}
-                className="w-full"
                 readOnly
+                  className="w-full px-2 py-1 border-2 border-gray-400 bg-white"
+                  style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)' }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Topic Details</label>
-              <Textarea
+                <label className="block text-sm font-bold mb-1 text-black">Topic Details</label>
+                <textarea
                 value={topicDetails}
-                className="w-full min-h-32"
                 readOnly
+                  rows={6}
+                  className="w-full px-2 py-1 border-2 border-gray-400 bg-white resize-none"
+                  style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)' }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Addressee<span className="text-red-500">*</span>
+                <label className="block text-sm font-bold mb-1 text-black">
+                  Addressee<span className="text-red-600 ml-1">*</span>
               </label>
               <div className="flex items-center gap-2">
-                <Select value={addressee}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={addressee}>{addressee}</SelectItem>
-                  </SelectContent>
-                </Select>
-                <button className="text-green-700 text-sm whitespace-nowrap">+ Add Addressee</button>
+                  <select 
+                    value={addressee}
+                    onChange={(e) => setAddressee(e.target.value)}
+                    className="flex-1 px-2 py-1 border-2 border-gray-400 bg-white"
+                    style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)' }}
+                  >
+                    {addresseeOptions.map((option, index) => (
+                      <option key={index} value={option}>{option}</option>
+                    ))}
+                  </select>
+                  <button 
+                    className="px-3 py-1 text-white border-2 font-bold text-xs whitespace-nowrap"
+                    style={{ 
+                      backgroundColor: '#008030', 
+                      borderColor: '#006020',
+                      boxShadow: '2px 2px 4px rgba(0,0,0,0.2)', 
+                      cursor: 'pointer' 
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#009040'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#008030'}
+                  >
+                    + Add Addressee
+                  </button>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Length Requirement<span className="text-red-500">*</span>
+                <label className="block text-sm font-bold mb-1 text-black">
+                  Length Requirement<span className="text-red-600 ml-1">*</span>
               </label>
               <div className="flex gap-2">
-                <Input
+                  <input
+                    type="text"
                   value={lengthValue}
-                  className="flex-1"
                   readOnly
-                />
-                <Select value={lengthUnit}>
-                  <SelectTrigger className="w-32">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Pages">Pages</SelectItem>
-                    <SelectItem value="Words">Words</SelectItem>
-                  </SelectContent>
-                </Select>
+                    className="w-20 px-2 py-1 border-2 border-gray-400 bg-white"
+                    style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)' }}
+                  />
+                  <select
+                    value={lengthUnit}
+                    className="px-2 py-1 border-2 border-gray-400 bg-white"
+                    style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)' }}
+                  >
+                    <option>Pages</option>
+                    <option>Words</option>
+                  </select>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                References<span className="text-red-500">*</span>
+                <label className="block text-sm font-bold mb-1 text-black">
+                  References<span className="text-red-600 ml-1">*</span>
               </label>
-              <div className="space-y-2">
+                <div className="space-y-2 border-2 border-gray-400 bg-gray-50 p-3" style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)' }}>
                 {references.map((ref, index) => (
-                  <Input
-                    key={index}
-                    value={ref}
-                    className="w-full"
-                    readOnly
-                  />
+                    <div key={index} className="flex items-center gap-2 bg-white p-2 border border-gray-300">
+                      {ref.type === 'pdf' ? (
+                        <>
+                          <FileText className="w-4 h-4 flex-shrink-0" style={{ color: '#d32f2f' }} />
+                          <span className="text-sm text-black flex-1">{ref.name}</span>
+                        </>
+                      ) : (
+                        <>
+                          <ExternalLink className="w-4 h-4 flex-shrink-0" style={{ color: '#008030' }} />
+                          <span className="text-sm text-black flex-1">{ref.name}</span>
+                        </>
+                      )}
+                      <button
+                        className="flex-shrink-0 p-0.5 text-gray-400 hover:text-red-600 transition-colors"
+                        style={{ cursor: 'pointer' }}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = '#dc2626'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = '#9ca3af'
+                        }}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
                 ))}
               </div>
-              <button className="text-green-700 text-sm mt-2">+ Add Reference</button>
+                <button 
+                  className="underline text-sm mt-2"
+                  style={{ color: '#008030', cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#006020'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#008030'}
+                >
+                  + Add Reference
+                </button>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Memo Structure</label>
-              <div className="border border-gray-300 rounded-md p-4 space-y-2 max-h-64 overflow-y-auto">
+                <label className="block text-sm font-bold mb-1 text-black">Memo Structure</label>
+                <div className="border-2 border-gray-400 bg-gray-50 p-2 max-h-64 overflow-y-auto" style={{ boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.1)' }}>
+                  <div className="space-y-1">
                 {memoStructure.map((section, index) => (
-                  <div key={index} className="flex items-start gap-3 p-3 border border-gray-200 rounded">
-                    <GripVertical className="w-5 h-5 text-gray-400 mt-1" />
-                    <div className="flex-1">
-                      <div className="font-semibold">{section.title}</div>
-                      <div className="text-sm text-gray-600">{section.description}</div>
+                      <div
+                        key={section.id}
+                        className={`border border-gray-400 p-2 flex items-center gap-2 ${section.selected ? 'bg-white' : 'bg-gray-200 opacity-60'}`}
+                      >
+                        <div className="flex flex-col gap-0.5 flex-shrink-0">
+                          <button
+                            onClick={() => moveSectionUp(index)}
+                            disabled={index === 0}
+                            className={`p-1 border border-gray-400 ${index === 0 ? 'bg-gray-300 cursor-not-allowed opacity-50' : 'bg-white hover:bg-gray-100 cursor-pointer'}`}
+                            style={{ 
+                              boxShadow: index === 0 ? 'none' : '1px 1px 2px rgba(0,0,0,0.1)',
+                              lineHeight: 0
+                            }}
+                          >
+                            <ChevronUp className="w-3 h-3 text-gray-700" />
+                          </button>
+                          <button
+                            onClick={() => moveSectionDown(index)}
+                            disabled={index === memoStructure.length - 1}
+                            className={`p-1 border border-gray-400 ${index === memoStructure.length - 1 ? 'bg-gray-300 cursor-not-allowed opacity-50' : 'bg-white hover:bg-gray-100 cursor-pointer'}`}
+                            style={{ 
+                              boxShadow: index === memoStructure.length - 1 ? 'none' : '1px 1px 2px rgba(0,0,0,0.1)',
+                              lineHeight: 0
+                            }}
+                          >
+                            <ChevronDown className="w-3 h-3 text-gray-700" />
+                          </button>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className={`font-bold ${section.selected ? 'text-black' : 'text-gray-500'}`}>{section.title}</div>
+                          <div className={`text-xs mt-0.5 ${section.selected ? 'text-gray-700' : 'text-gray-500'}`}>{section.description}</div>
+                        </div>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <input
+                            type="checkbox"
+                            checked={section.selected}
+                            onChange={(e) => {
+                              const newStructure = [...memoStructure]
+                              newStructure[index].selected = e.target.checked
+                              setMemoStructure(newStructure)
+                            }}
+                            className="w-4 h-4 cursor-pointer"
+                          />
+                          <button className="text-gray-600 hover:text-black px-1" style={{ cursor: 'pointer', fontSize: '18px' }}>⋮</button>
                     </div>
-                    <button className="text-gray-400">⋮</button>
                   </div>
                 ))}
               </div>
-              <button className="text-green-700 text-sm mt-2">+ Add Section</button>
+                </div>
+                <button 
+                  className="underline text-sm mt-1"
+                  style={{ color: '#008030' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#006020'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#008030'}
+                  style={{ cursor: 'pointer' }}
+                >
+                  + Add Section
+                </button>
             </div>
 
-            <div className="flex justify-center pt-4">
-              <Button
+              <div className="flex justify-center pt-3 border-t-2 border-gray-400">
+                <button
                 onClick={nextStep}
-                className="bg-green-700 hover:bg-green-800 text-white px-8 py-2"
+                  className="px-8 py-2 text-white border-2 font-bold"
+                  style={{ 
+                    backgroundColor: '#008030', 
+                    borderColor: '#006020',
+                    boxShadow: '2px 2px 4px rgba(0,0,0,0.3)', 
+                    cursor: 'pointer' 
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#009040'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#008030'}
               >
                 Generate
-              </Button>
+                </button>
+              </div>
             </div>
           </div>
         )}
 
         {/* Step 2: Select Options */}
         {currentStep === 2 && (
-          <div className="space-y-6">
+          <div className="space-y-3">
             {/* Policy Options Tabs */}
-            <div className="border border-gray-300 rounded-md">
-              <div className="flex items-center bg-gray-100 border-b border-gray-300">
-                <button className="p-2 hover:bg-gray-200">
-                  <ChevronLeft className="w-5 h-5" />
+            <div className="bg-white border-2 border-gray-400" style={{ boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.1)' }}>
+              <div className="flex items-center border-b-2 border-gray-400" style={{ backgroundColor: '#e0f0e8' }}>
+                <button 
+                  className="p-2 border-r-2 border-gray-400" 
+                  style={{ cursor: 'pointer', backgroundColor: '#c0e0d0' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#a0d0b8'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#c0e0d0'}
+                >
+                  <ChevronLeft className="w-4 h-4" style={{ color: '#008030' }} />
                 </button>
-                <div className="flex-1 flex items-center justify-center gap-8 py-3">
+                <div className="flex-1 flex items-center justify-center gap-4 py-2 overflow-x-auto">
                   {policyOptions.map((option) => (
                     <button
                       key={option.id}
                       onClick={() => setSelectedPolicyOption(option.id)}
-                      className={`text-sm ${
+                      className={`text-xs font-bold px-3 py-1 border-2 ${
                         selectedPolicyOption === option.id
-                          ? 'text-green-700 font-semibold underline'
-                          : 'text-gray-700'
+                          ? 'bg-yellow-200 text-black border-yellow-500 border-t-yellow-300 border-l-yellow-300'
+                          : 'bg-white text-black border-gray-400 hover:bg-yellow-100'
                       }`}
+                      style={{ 
+                        boxShadow: selectedPolicyOption === option.id ? 'inset 1px 1px 2px rgba(0,0,0,0.2)' : '1px 1px 2px rgba(0,0,0,0.1)',
+                        cursor: 'pointer'
+                      }}
                     >
                       {option.id}) {option.title}
                     </button>
                   ))}
                 </div>
-                <button className="p-2 hover:bg-gray-200">
-                  <ChevronRight className="w-5 h-5" />
+                <button 
+                  className="p-2 border-l-2 border-gray-400" 
+                  style={{ cursor: 'pointer', backgroundColor: '#c0e0d0' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#a0d0b8'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#c0e0d0'}
+                >
+                  <ChevronRight className="w-4 h-4" style={{ color: '#008030' }} />
                 </button>
               </div>
             </div>
 
             {/* Selected Policy Option Content */}
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold">{selectedPolicyOption}) Policy Option</h2>
-              <p className="text-gray-700 leading-relaxed">
+            <div className="bg-white border-2 border-gray-400 p-4" style={{ boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.1)' }}>
+              <h2 className="text-xl font-bold mb-3 text-black border-b-2 border-gray-400 pb-2">
+                {selectedPolicyOption}) {policyOptions[selectedPolicyOption - 1].title}
+              </h2>
+              <div className="bg-gray-50 border border-gray-300 p-3 mb-4" style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)' }}>
+                <p className="text-black leading-relaxed whitespace-pre-line text-sm">
                 {policyOptions[selectedPolicyOption - 1].content}
               </p>
+              </div>
 
-              <div>
-                <p className="font-semibold mb-2">References:</p>
-                <div className="space-y-1">
+              <div className="mb-4 border-2 border-gray-400 bg-white p-2" style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)' }}>
+                <p className="font-bold mb-2 text-black text-sm">References:</p>
+                <div className="space-y-2">
                   {policyOptions[selectedPolicyOption - 1].references.map((ref, index) => (
-                    <a key={index} href="#" className="block text-blue-600 hover:underline">
-                      {ref}
-                    </a>
+                    <div key={index} className="flex items-center gap-2">
+                      {ref.type === 'pdf' ? (
+                        <>
+                          <FileText className="w-4 h-4 flex-shrink-0" style={{ color: '#d32f2f' }} />
+                          <a 
+                            href="#" 
+                            className="text-sm hover:underline"
+                            style={{ color: '#008030' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#006020'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#008030'}
+                          >
+                            {ref.name}
+                          </a>
+                        </>
+                      ) : (
+                        <>
+                          <ExternalLink className="w-4 h-4 flex-shrink-0" style={{ color: '#008030' }} />
+                          <a 
+                            href="#" 
+                            className="text-sm hover:underline"
+                            style={{ color: '#008030' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = '#006020'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = '#008030'}
+                          >
+                            {ref.name}
+                          </a>
+                        </>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
 
-              <div className="space-y-3 pt-4">
-                <div className="flex items-center gap-2">
-                  <Checkbox
+              <div className="space-y-2 pt-3 border-t-2 border-gray-400">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
                     checked={selectedOptions.includes(selectedPolicyOption)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
+                    onChange={(e) => {
+                      if (e.target.checked) {
                         setSelectedOptions([...selectedOptions, selectedPolicyOption])
                       } else {
                         setSelectedOptions(selectedOptions.filter(id => id !== selectedPolicyOption))
                       }
                     }}
-                    className="data-[state=checked]:bg-green-700 data-[state=checked]:border-green-700"
+                    className="w-4 h-4"
                   />
-                  <label className="text-sm font-medium">Select as Policy Option</label>
-                </div>
+                  <span className="text-sm font-bold text-black">☑ Select as Policy Option</span>
+                </label>
 
-                <div className="flex items-center gap-2">
-                  <Checkbox
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
                     checked={recommendedOption === selectedPolicyOption}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
+                    onChange={(e) => {
+                      if (e.target.checked) {
                         setRecommendedOption(selectedPolicyOption)
+                      } else {
+                        setRecommendedOption(null)
                       }
                     }}
-                    className="data-[state=checked]:bg-green-700 data-[state=checked]:border-green-700"
+                    className="w-4 h-4"
                   />
-                  <label className="text-sm font-medium">Select as Recommended Option</label>
-                </div>
+                  <span className="text-sm font-bold text-black">☑ Select as Recommended Option</span>
+                </label>
               </div>
             </div>
 
-            <div className="flex justify-center pt-4">
-              <Button
+            <div className="flex justify-center pt-3">
+              <button
                 onClick={nextStep}
-                className="bg-green-700 hover:bg-green-800 text-white px-8 py-2"
+                className="px-8 py-2 bg-green-600 text-white border-2 border-green-800 font-bold hover:bg-green-700"
+                style={{ boxShadow: '2px 2px 4px rgba(0,0,0,0.3)', cursor: 'pointer' }}
               >
                 Generate Draft
-              </Button>
+              </button>
             </div>
           </div>
         )}
 
         {/* Step 3: Edit Draft */}
         {currentStep === 3 && (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {Object.entries(draftSections).map(([key, section]) => (
-              <Collapsible
-                key={key}
-                open={expandedSections[key as keyof typeof expandedSections]}
-                onOpenChange={() => toggleSection(key)}
-                className="border border-gray-300 rounded-md"
-              >
-                <div className="flex items-center justify-between p-4 bg-gray-50">
-                  <div className="flex items-center gap-3">
-                    <GripVertical className="w-5 h-5 text-gray-400" />
-                    <span className="font-semibold">{section.title}</span>
+              <div key={key} className="bg-white border-2 border-gray-400" style={{ boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.1)' }}>
+                <div className="flex items-center justify-between p-3 border-b-2 border-gray-400" style={{ backgroundColor: '#e0f0e8' }}>
+                  <div className="flex items-center gap-2">
+                    <GripVertical className="w-4 h-4" style={{ color: '#008030' }} />
+                    <span className="font-bold text-black">{section.title}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      className="bg-green-700 hover:bg-green-800 text-white text-xs"
+                    <button
+                      className="px-3 py-1 text-white border-2 text-xs font-bold"
+                      style={{ 
+                        backgroundColor: '#008030', 
+                        borderColor: '#006020',
+                        boxShadow: '2px 2px 4px rgba(0,0,0,0.2)', 
+                        cursor: 'pointer' 
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#009040'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#008030'}
                     >
-                      <Sparkles className="w-3 h-3 mr-1" />
+                      <Sparkles className="w-3 h-3 inline mr-1" />
                       AI Refine
-                    </Button>
-                    <CollapsibleTrigger className="p-1">
-                      <span className="text-xl">{expandedSections[key as keyof typeof expandedSections] ? '∧' : '∨'}</span>
-                    </CollapsibleTrigger>
+                    </button>
+                    <button
+                      onClick={() => toggleSection(key)}
+                      className="px-2 py-1 bg-gray-300 border-2 border-gray-500 text-xs font-bold hover:bg-gray-400"
+                      style={{ boxShadow: '2px 2px 4px rgba(0,0,0,0.2)', cursor: 'pointer' }}
+                    >
+                      {expandedSections[key as keyof typeof expandedSections] ? '▲' : '▼'}
+                    </button>
                   </div>
                 </div>
-                <CollapsibleContent>
-                  <div className="p-4 space-y-3">
+                {expandedSections[key as keyof typeof expandedSections] && (
+                  <div className="p-4 bg-gray-50 space-y-3">
                     <div>
-                      <label className="block text-xs text-gray-600 mb-1">Feedback for AI Adjustments</label>
-                      <Textarea
+                      <label className="block text-xs font-bold mb-1 text-black">Feedback for AI Adjustments</label>
+                      <textarea
                         placeholder="e.g. make it more concise,..."
-                        className="w-full text-sm"
                         rows={2}
+                        className="w-full px-2 py-1 border-2 border-gray-400 bg-white text-sm resize-none"
+                        style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)' }}
                       />
                     </div>
-                    <Textarea
+                    <textarea
                       value={section.content}
-                      className="w-full min-h-32"
                       readOnly
+                      rows={8}
+                      className="w-full px-2 py-1 border-2 border-gray-400 bg-white resize-none"
+                      style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)' }}
                     />
                   </div>
-                </CollapsibleContent>
-              </Collapsible>
+                )}
+              </div>
             ))}
 
-            <div className="flex justify-center pt-4">
-              <Button
+            <div className="flex justify-center pt-3">
+              <button
                 onClick={nextStep}
-                className="bg-green-700 hover:bg-green-800 text-white px-8 py-2"
+                className="px-8 py-2 bg-green-600 text-white border-2 border-green-800 font-bold hover:bg-green-700"
+                style={{ boxShadow: '2px 2px 4px rgba(0,0,0,0.3)', cursor: 'pointer' }}
               >
                 Finalize
-              </Button>
+              </button>
             </div>
           </div>
         )}
 
         {/* Step 4: Finalize */}
         {currentStep === 4 && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Final Version</h2>
-            <div className="border border-gray-300 rounded-md p-6 max-h-96 overflow-y-auto bg-white">
-              <div className="whitespace-pre-wrap text-sm leading-relaxed">
-                {finalVersion}
+          <div className="space-y-4">
+            <div className="border-2 p-2" style={{ backgroundColor: '#008030', borderColor: '#006020' }}>
+              <h2 className="text-xl font-bold text-white">Final Version</h2>
               </div>
+            <div className="p-4 bg-gray-50">
+              <textarea
+                value={finalVersion}
+                readOnly
+                rows={20}
+                className="w-full px-2 py-1 border-2 border-gray-400 bg-white resize-none"
+                style={{ boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)' }}
+              />
             </div>
 
-            <div className="flex justify-center gap-4 pt-4">
-              <Button
-                variant="outline"
-                className="px-8 py-2 border-gray-300"
+            <div className="flex justify-center gap-3 pt-3">
+              <button
+                className="px-8 py-2 bg-gray-300 text-black border-2 border-gray-500 font-bold hover:bg-gray-400"
+                style={{ boxShadow: '2px 2px 4px rgba(0,0,0,0.2)', cursor: 'pointer' }}
               >
                 Save
-              </Button>
-              <Button
-                className="bg-green-700 hover:bg-green-800 text-white px-8 py-2"
+              </button>
+              <button
+                className="px-8 py-2 bg-green-600 text-white border-2 border-green-800 font-bold hover:bg-green-700"
+                style={{ boxShadow: '2px 2px 4px rgba(0,0,0,0.3)', cursor: 'pointer' }}
               >
                 Export
-              </Button>
+              </button>
             </div>
           </div>
         )}
